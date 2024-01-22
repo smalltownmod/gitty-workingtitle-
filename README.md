@@ -3,7 +3,7 @@
 - a little gitClient
 - work in progress
 
-##TODOs
+## TODOs
 
 - Checkboxes for selecting Files to commit aren't working yet (you can either commit everything or nothing)
 - Linux Version planned

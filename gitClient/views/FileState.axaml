@@ -1,0 +1,24 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+						  mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="gitClient.views.FileState">
+			<DataGrid Name="dgvFileState"  ItemsSource="{Binding}" IsReadOnly="True" HeadersVisibility="None">
+				<DataGrid.Columns>
+					<DataGridTemplateColumn >
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<CheckBox Name="Checker" />
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+					<DataGridTextColumn Binding="{Binding State}"
+															FontStyle="Italic"
+															Foreground="AliceBlue"/>
+					<DataGridTextColumn Binding ="{Binding FilePath}"
+															Foreground="Orange"/>
+				</DataGrid.Columns>
+			</DataGrid>
+
+</UserControl>

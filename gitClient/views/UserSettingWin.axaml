@@ -1,0 +1,38 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				Width="400" Height="230"
+				WindowStartupLocation="CenterScreen"
+        x:Class="gitClient.views.UserSettingWin"
+        Title="User Settings"
+				TransparencyLevelHint="AcrylicBlur"
+				Background="Transparent">
+	
+		<Window.Styles>
+			<Style Selector="TitleBar">
+				<Setter Property="Background" Value="Black"></Setter> 
+			</Style>
+		</Window.Styles>
+		<Panel>
+			<ExperimentalAcrylicBorder IsHitTestVisible="False">
+				<ExperimentalAcrylicBorder.Material>
+					<ExperimentalAcrylicMaterial
+						BackgroundSource="Digger"
+						TintColor="Black"
+						TintOpacity="1"
+						MaterialOpacity="0.65"/>
+				</ExperimentalAcrylicBorder.Material>
+			</ExperimentalAcrylicBorder>
+			<StackPanel Margin="40">
+				<TextBox  Watermark="UserName" Name="UsrNamBox"/>
+				<TextBox Watermark="Email" Name="UsrMailBox" Margin="0,0,0,10"/>
+				<TextBox Watermark="Github Personal Access Token" Name="GhUsrNamBox" PasswordChar="*"/>
+				<!--<TextBox Watermark="Github-Password" PasswordChar="*" Name="GhPWBox"/>-->
+				<WrapPanel Margin="0,10">
+					<Button Click="BtnSubmit_Click">Submit</Button>
+					<Button Click="BtnCancel_Click">Cancel</Button>
+				</WrapPanel>
+			</StackPanel>
+		</Panel>
+	</Window>

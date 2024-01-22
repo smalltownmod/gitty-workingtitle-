@@ -1,0 +1,33 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Width="400"
+				Height="200"
+        x:Class="gitClient.views.CommitWin"
+				WindowStartupLocation="CenterScreen"
+        Title="Commit">
+	<Panel>
+		<ExperimentalAcrylicBorder IsHitTestVisible="False">
+			<ExperimentalAcrylicBorder.Material>
+				<ExperimentalAcrylicMaterial
+					BackgroundSource="Digger"
+					TintColor="Black"
+					TintOpacity="1"
+					MaterialOpacity="0.65"/>
+			</ExperimentalAcrylicBorder.Material>
+		</ExperimentalAcrylicBorder>	
+	<StackPanel Margin="20">
+		<TextBlock>
+			ACHTUNG!!!
+		</TextBlock>
+		<TextBlock>Alle geänderten Dateien werden commited!!</TextBlock>
+		<TextBox Watermark="Commit Message" Height="100" AcceptsReturn="True"
+						 Name="MsgCommit"/>
+		<WrapPanel>
+			<Button Click="Btn_Commit">Commit Selected</Button>
+			<Button Click="Btn_Cancel">Cancel</Button>
+		</WrapPanel>
+	</StackPanel>
+	</Panel>
+</Window>

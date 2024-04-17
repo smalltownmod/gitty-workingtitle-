@@ -3,6 +3,8 @@
 - a little gitClient
 - work in progress
 
+ ![screenshot](/./screenshot.jpg)
+
 ## TODOs
 
 - Checkboxes for selecting Files to commit aren't working yet (you can either commit everything or nothing)

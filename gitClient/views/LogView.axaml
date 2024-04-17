@@ -5,15 +5,15 @@
 						  mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="gitClient.views.LogView">
 	<Panel>
-		<ExperimentalAcrylicBorder IsHitTestVisible="False">
+		<!--<ExperimentalAcrylicBorder IsHitTestVisible="False">
 			<ExperimentalAcrylicBorder.Material>
 				<ExperimentalAcrylicMaterial
 					BackgroundSource="Digger"
 					TintColor="Black"
 					TintOpacity="1"
 					MaterialOpacity="0.65"/>
-			</ExperimentalAcrylicBorder.Material>
-		</ExperimentalAcrylicBorder>
+			</ExperimentalAcrylicBorder.Material>-->
+		<!--</ExperimentalAcrylicBorder>-->
 		<DataGrid Name="dgvLog"  IsReadOnly="True">
 			<DataGrid.Styles>
 				<Style Selector="DataGridColumnHeader">

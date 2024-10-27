@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -10,6 +10,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>full</DebugType>
+    <DefineConstants>$(DefineConstants);DANDERS</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>full</DebugType>
@@ -21,27 +22,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.3" />
-    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.3" />
-    <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.0" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.3" />
+    <PackageReference Include="Avalonia" Version="0.10.21" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="0.10.21" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.21" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.3" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.3" />
-    <PackageReference Include="Avalonia.Remote.Protocol" Version="11.0.3" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.3" />
-    <PackageReference Include="Avalonia.X11" Version="11.0.3" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.21" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.21" />
+    <PackageReference Include="Avalonia.X11" Version="0.10.21" />
     <PackageReference Include="LibGit2Sharp" Version="0.27.2" />
-    <PackageReference Include="MessageBox.Avalonia" Version="3.1.4" />
+    <PackageReference Include="LibGit2Sharp-SSH" Version="1.0.22" />
+    <PackageReference Include="MessageBox.Avalonia" Version="2.1.0" />
+    <PackageReference Include="XamlNameReferenceGenerator" Version="1.6.1" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update=".gitignore">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="views\OpenRepWin.axaml" />
   </ItemGroup>
 </Project>

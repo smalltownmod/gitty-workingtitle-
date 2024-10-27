@@ -37,8 +37,6 @@
 					To open and view a repository Click the Repo
 panel in the Open Menu. The Client
 checks wether a folder is a Git repository.
-The UserSettings are taken from the
-git Config data and are currently ReadOnly.
 				</TextBox>
 				<TextBlock>
 					Branches

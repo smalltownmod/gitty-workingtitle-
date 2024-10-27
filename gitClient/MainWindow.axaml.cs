@@ -9,8 +9,6 @@ using Avalonia.Threading;
 using Avalonia.Interactivity;
 using static MsBox.Avalonia.MessageBoxManager;
 using gitClient.model;
-using System.Text.Json;
-using LibGit2Sharp.Handlers;
 using System.Timers;
 
 namespace gitClient {
@@ -24,7 +22,6 @@ namespace gitClient {
       oldpath = Directory.GetCurrentDirectory();
       InitializeComponent();
       if (File.Exists("lastpath")) {
-        //   var last = JsonSerializer.Deserialize<LastState>(File.ReadAllText(@"lastPath.Json"));
         var last = File.ReadAllText("lastpath");
         try {
           RefreshRepos(last);
@@ -37,13 +34,6 @@ namespace gitClient {
         }
       }
 
-#if DANDERS
-      ////var path = @"E:\programming\source\repos\projectSchmock";
-      //var path = @"C:\Users\Praktikant\source\repos\dummesTestRepo";
-      //// var path = @"C:\Users\Praktikant\source\repos\smalltownmod\projectSchmock";
-      //RefreshRepos(path);
-      //systemWatch(path);
-#endif
       SetTimer();
       watcher.Created += onChange;
       watcher.Changed += onChange;
@@ -71,8 +61,6 @@ namespace gitClient {
       }
 
       else {
-        //CtrlBtnPush.IsVisible = false;
-        //CtrlBtnPull.IsVisible = false;
         CtrlBtnPush.Content = $"Push";
         CtrlBtnPull.Content = $"Pull";
       }
@@ -191,18 +179,6 @@ namespace gitClient {
       Directory.SetCurrentDirectory(Repo.Info.WorkingDirectory);
       try {
         ProcInvoker.Run("git", $" push -u origin {curBranch}");
-
-
-        // -----Highly Deprecated Stuff
-        //var cred = JsonSerializer.Deserialize<GitCred>(File.ReadAllText(@"cred.json")) ?? new GitCred();
-        //Remote remote = Repo.Network.Remotes["origin"];
-        //var po = new PushOptions();
-        //var curBranch = Repo.Branches.Where(b => b.IsCurrentRepositoryHead).First();
-        //po.CredentialsProvider = (_url, _user, _cred) => new UsernamePasswordCredentials
-        //  { Username = cred.GitName, Password = string.Empty };
-        //Repo.Network.Push(remote, curBranch.CanonicalName, po);
-        //var tracking = Repo.Branches[$"origin/{curBranch.FriendlyName}"];
-        //Repo.Branches.Update(curBranch, b => b.TrackedBranch = tracking.CanonicalName);
       }
       catch (Exception ex) {
         GetMessageBoxStandard("error", ex.Message).ShowAsync();
@@ -215,18 +191,6 @@ namespace gitClient {
         var curBranch = Repo.Branches.Where(b => b.IsCurrentRepositoryHead).First();
         Directory.SetCurrentDirectory(Repo.Info.WorkingDirectory);
         ProcInvoker.Run("git", $" pull origin {curBranch}");
-        //var sig = Repo.Config.BuildSignature(DateTimeOffset.Now);
-        //var tracking = Repo.Branches[$"origin/{curBranch.FriendlyName}"];
-        //var cred = JsonSerializer.Deserialize<GitCred>(File.ReadAllText(@"cred.json")) ?? new GitCred();
-        //var po = new PullOptions();
-        //po.FetchOptions = new FetchOptions();
-        //po.FetchOptions.CredentialsProvider = new CredentialsHandler(
-        //  (url, usernameFromUrl, types) => new UsernamePasswordCredentials()
-        //    { Username = cred.GitName, Password = string.Empty });
-        //var MergeSig = new Signature(
-        //  new Identity(sig.Name, sig.Email), DateTimeOffset.Now);
-        //Repo.Branches.Update(curBranch, b => b.TrackedBranch = tracking.CanonicalName);
-        //Commands.Pull(Repo, MergeSig, null);
       }
       catch (Exception ex) {
         GetMessageBoxStandard("error", ex.Message).ShowAsync();
@@ -241,37 +205,22 @@ namespace gitClient {
 
     public static void UiState(string path) {
       Directory.SetCurrentDirectory(oldpath);
-      // LastState lastState = new();
-      // lastState.LastPath = path.Trim();
-      // var jfile = JsonSerializer.Serialize(lastState);
-      // File.WriteAllText(@"lastPath.json", jfile);
       File.WriteAllText("lastpath", path.Trim());
     }
 
     public static void FetchAll(Repository r) {
       if (!r.Branches.Where(b => b.IsCurrentRepositoryHead).First().IsTracking) return;
 
-      string logm = "";
-      //if (File.Exists(@"cred.json")) {
-      //  var cred = JsonSerializer.Deserialize<GitCred>(File.ReadAllText(@"cred.json")) ?? new GitCred();
-      //  FetchOptions fo = new() {
-      //    CredentialsProvider = new CredentialsHandler((url, usernameFromUrl, types) =>
-      //      new UsernamePasswordCredentials() { Username = cred.GitName, Password = string.Empty })
-      //  };
-    
-        //var remote = r.Network.Remotes["origin"];
-        //var refSpecs = remote.FetchRefSpecs.Select(x => x.Specification);
+
         try {
         Directory.SetCurrentDirectory(Repo.Info.WorkingDirectory);
         ProcInvoker.Run("git", " fetch --all");
-          //Commands.Fetch(r, remote.Name, refSpecs, null, logm);
         }
         catch (Exception ex) {
           //GetMessageBoxStandard("error", ex.Message).ShowAsync();
         }
       Directory.SetCurrentDirectory(oldpath);
       }
-    //}
 
     private static void timedEvent(Object source, ElapsedEventArgs e) {
       FetchAll(Repo);

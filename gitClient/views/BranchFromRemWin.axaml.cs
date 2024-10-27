@@ -11,7 +11,6 @@ using static gitClient.MainWindow;
 
 namespace gitClient.views {
   public partial class BranchFromRemWin : Window {
-    //private Repository repo { get; set; }
     public BranchFromRemWin() {
       InitializeComponent();
       try {
@@ -22,23 +21,12 @@ namespace gitClient.views {
     }
     private void BtnPull(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
       var newBranch = ComBranchList.SelectedItem.ToString().Split("/").Last();
-      //var sig = Repo.Config.BuildSignature(DateTimeOffset.Now);
-      //var cred = JsonSerializer.Deserialize<GitCred>(File.ReadAllText(@"cred.json")) ?? new GitCred();
       try {
         Directory.SetCurrentDirectory(Repo.Info.WorkingDirectory);
         ProcInvoker.Run("git", $" pull origin {newBranch}");
         Directory.SetCurrentDirectory(oldpath);
-        //  Branch NewBranch = Repo.Branches.Add(newBranch, Repo.Commits.Last().Id.Sha);
-        //  var tracking = Repo.Branches[$"origin/{NewBranch.FriendlyName}"];
-        //  var po = new PullOptions();
-        //  po.FetchOptions = new FetchOptions();
-        //  po.FetchOptions.CredentialsProvider = new CredentialsHandler(
-        //    (url, usernameFromUrl, types) => new UsernamePasswordCredentials() { Username = cred.GitName, Password = string.Empty });
-        //  var MergeSig = new Signature(
-        //    new Identity(sig.Name, sig.Email), DateTimeOffset.Now);
-         //Repo.Branches.Update(NewBranch, b => b.TrackedBranch = tracking.CanonicalName);
         Commands.Checkout(Repo, newBranch);
-        //Commands.Pull(repo, MergeSig, po);
+
         Close();
       }
       catch (Exception ex) {

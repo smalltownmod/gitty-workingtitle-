@@ -1,0 +1,1 @@
+dotnet publish ./gitClient/gitCLient.csproj -o ./build --no-self-contained -p:PublishSingleFile=true

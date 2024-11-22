@@ -1,0 +1,69 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Width="400" Height="400"
+        x:Class="gitClient.views.AboutWindow"
+        Title="About"
+				TransparencyLevelHint="AcrylicBlur"
+				WindowStartupLocation="CenterOwner"
+				Background="Transparent">
+	<Panel>
+		<Panel.Styles>
+			<Style Selector="TextBox">
+				<Setter Property="TextWrapping" Value="Wrap"></Setter>
+				<Setter Property="Focusable" Value="False"></Setter>
+				<Setter Property="Margin" Value="0,0,10,0"></Setter>
+				<Setter Property="IsReadOnly" Value="True"></Setter>
+			</Style>
+			<Style Selector="TextBlock">
+				<Setter Property="Margin" Value="0,10,0,5"></Setter>
+			</Style>
+		</Panel.Styles>
+		<ExperimentalAcrylicBorder IsHitTestVisible="False">
+			<ExperimentalAcrylicBorder.Material>
+				<ExperimentalAcrylicMaterial
+					BackgroundSource="Digger"
+					TintColor="Black"
+					TintOpacity="1"
+					MaterialOpacity="0.65"/>
+			</ExperimentalAcrylicBorder.Material>
+		</ExperimentalAcrylicBorder>
+		<Panel Margin="40">
+			<ScrollViewer>
+			<StackPanel>
+				<TextBlock>Welcome to this little gitClient.</TextBlock>
+				<TextBox >
+					To open and view a repository Click the Repo
+panel in the Open Menu. The Client
+checks wether a folder is a Git repository.
+				</TextBox>
+				<TextBlock>
+					Branches
+				</TextBlock>
+				<TextBox>
+This Component shows the branches in the 
+current repository and the time of the 
+last commit in each branch.
+Current working branch is first in list.
+				</TextBox>
+				<TextBlock>Log</TextBlock>
+				<TextBox>
+					Shows the commit log.
+Date, author and commit message are 
+shown first. Id and the authors email in a 
+detail view 
+				</TextBox>
+				<TextBlock> Uncommited Changes in Workdir</TextBlock>
+				<TextBox>
+					Shows which files are changed since the 
+last commit. Select a file via checkbox and click the "Add" button
+to stage it and click the 
+"commit selected" Button to make a commit.
+				</TextBox>
+				<TextBlock>Remote</TextBlock>
+				<TextBox>The Client works via ssh for remote funtions</TextBox>
+				<Button Margin="0,10,0,0" Content="Ok" Click="BtnOk"/>
+			</StackPanel>
+			</ScrollViewer>
+		</Panel>
+	</Panel>
+</Window>

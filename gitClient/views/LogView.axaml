@@ -1,0 +1,66 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+						  mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="gitClient.views.LogView">
+	<Panel>
+		<!--<ExperimentalAcrylicBorder IsHitTestVisible="False">
+			<ExperimentalAcrylicBorder.Material>
+				<ExperimentalAcrylicMaterial
+					BackgroundSource="Digger"
+					TintColor="Black"
+					TintOpacity="1"
+					MaterialOpacity="0.75"/>
+			</ExperimentalAcrylicBorder.Material>
+		</ExperimentalAcrylicBorder>-->
+		<DataGrid Name="dgvLog"  IsReadOnly="True">
+			<DataGrid.Styles>
+				<Style Selector="DataGridColumnHeader">
+					<Setter Property="Background" Value="Transparent"></Setter>
+					<Setter Property="FontWeight" Value="Bold"></Setter>
+					<Setter Property="FontSize" Value="14"></Setter>
+					<Setter Property="AreSeparatorsVisible" Value="False"></Setter>
+					<Setter Property="Foreground" Value="White"></Setter>
+					<Setter Property="Margin" Value="0,0,5,0"></Setter>
+				</Style>
+				<Style Selector="DataGridRow:selected">
+					<!--<Setter Property="Background" Value="Black"></Setter>-->
+					<Setter Property="OpacityMask" Value="Black"></Setter>
+				</Style>
+				<Style Selector="DataGridRow.Background:selected">
+					<Setter Property="Opacity" Value="1"></Setter>
+				</Style>
+			<Style Selector="DataGridCell">
+				<Setter Property="Foreground" Value="White"></Setter>
+			<Setter Property="FontSize" Value="14"></Setter>
+				<Setter Property="Margin" Value="0,0,5,0"></Setter>
+			</Style>
+				<Style Selector="DataGridTextColumn">
+					
+				</Style>
+			</DataGrid.Styles>
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Date"  Binding="{ Binding Date }" Foreground="Orange"/>
+				<DataGridTextColumn Header="Author" Binding="{ Binding Author }"  Foreground="White"/>
+				<DataGridTextColumn Header="Info" Binding="{ Binding Message }" />
+
+			</DataGrid.Columns>
+			<DataGrid.RowDetailsTemplate>
+				<DataTemplate>
+					<Grid RowDefinitions="auto, auto" 
+								Margin="10,0,0,5">
+						<Grid.Styles>
+							<Style Selector="TextBlock">
+								<Setter Property="Foreground" Value="White"></Setter>
+							</Style>
+						</Grid.Styles>
+						<TextBlock Text="{Binding ID}" Grid.Row="0"
+											 Foreground="Magenta"/>
+						<TextBlock Text="{ Binding Mail }"  Grid.Row="1" />
+					</Grid>
+				</DataTemplate>
+			</DataGrid.RowDetailsTemplate>
+		</DataGrid>
+	</Panel>
+</UserControl>

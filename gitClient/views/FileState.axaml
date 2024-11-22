@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="gitClient.views.FileState">
+
+    <Panel>
+        <Grid RowDefinitions="auto,300,*" ColumnDefinitions="25,auto">
+			<CheckBox Grid.Row="0"
+				Name="Supercheck" IsCheckedChanged="Supercheck_change"/>
+					<TextBlock Text="Select All" FontWeight="Bold" Grid.Column="1"
+										 VerticalAlignment="Center"/>
+            <ScrollViewer Grid.Row="1" Grid.Column="1">
+
+                <ItemsControl ItemsSource="{Binding}" Name="dgvFileState">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="*,Auto">
+                                <CheckBox Grid.Column="0" Content="{Binding Path}" Name="checky"
+                                          IsChecked="{Binding Checked, Mode = TwoWay}" 
+                                          />
+                                <TextBlock Name="StateBlock" Text="{Binding State}" Grid.Column="1" 
+                                           Margin="40 0 0 0" VerticalAlignment="Center"
+                                           HorizontalAlignment="Right"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+            <Grid Grid.Row="2" ColumnDefinitions="Auto, Auto, Auto,Auto">
+
+                <Button Name="Add" Content="Add Selected" Click="Add_OnClick" />
+                <Button Grid.Column="1" Name="Unstage" Content="Unstage Selected" Click="Remove_OnClick" />
+                <Button Grid.Column="2" Content="Commit" Click="Commit_OnClick"/>
+                <Button Grid.Column="3" Content="Revert" Click="Revert_OnCLick"/>
+            </Grid>
+        </Grid>
+    </Panel>
+
+</UserControl>

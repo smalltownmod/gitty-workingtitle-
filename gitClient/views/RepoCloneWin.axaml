@@ -1,0 +1,32 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+        x:Class="gitClient.views.RepoCloneWin"
+				Width="400" Height="170"
+        Title="Repo Clone"
+        WindowStartupLocation="CenterOwner"
+				TransparencyLevelHint="AcrylicBlur"
+				Background="Transparent">
+	<Panel>
+		<ExperimentalAcrylicBorder IsHitTestVisible="False">
+			<ExperimentalAcrylicBorder.Material>
+				<ExperimentalAcrylicMaterial
+					BackgroundSource="Digger"
+					TintColor="Black"
+					TintOpacity="1"
+					MaterialOpacity="0.65"/>
+			</ExperimentalAcrylicBorder.Material>
+		</ExperimentalAcrylicBorder>
+		<StackPanel Margin="40">
+			<TextBox Watermark="url" Name="CloneUrl" />
+			<WrapPanel>
+			<TextBox Watermark="path/to/your/repo" Name="ClonePath" Width="290"/>
+			<Button Name="browse" Content="..." Click="Browse_OnClick" />
+			</WrapPanel>
+			<WrapPanel>
+				<Button Click="BtnClone">Clone</Button>
+				<Button Click="Cancel_OnClick">Cancel</Button>
+			</WrapPanel>
+		</StackPanel>
+	</Panel>
+</Window>

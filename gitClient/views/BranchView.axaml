@@ -1,0 +1,46 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="gitClient.views.BranchView">
+	<TabControl Margin="-5">
+		<TabControl.Styles>
+			<Style Selector="TabItem">
+				<Setter Property="FontSize" Value="12"></Setter>
+				<Setter Property="FontWeight" Value="Medium"></Setter>
+			</Style>
+			<Style Selector="TabItem:selected">
+				<Setter Property="FontWeight" Value="Bold"></Setter>
+			</Style>
+		</TabControl.Styles>
+		<TabItem Header="Local">
+			<ScrollViewer>
+				<DataGrid Name="dgvBranchesLocal" HeadersVisibility="None" VerticalScrollBarVisibility="Disabled">
+					<DataGrid.Styles>
+						<Style Selector="DataGridRow">
+							<Setter Property="Background" Value="Transparent"></Setter>
+						</Style>
+						<Style Selector="DataGridCell">
+							<Setter Property="Foreground" Value="White"></Setter>
+						</Style>
+					</DataGrid.Styles>
+					<DataGrid.Columns>
+
+						<DataGridTextColumn Binding="{Binding FriendlyName}" />
+						<DataGridTextColumn Binding="{Binding Tip.Committer.When.DateTime}"
+																Foreground="Orange" FontWeight="Light"/>
+					</DataGrid.Columns>
+				</DataGrid>
+			</ScrollViewer>
+		</TabItem>
+		<TabItem Header="Remote">
+			<ScrollViewer>
+				<DataGrid Name="dgvBranchesRemote" HeadersVisibility="None" VerticalScrollBarVisibility="Disabled">
+					<DataGrid.Columns>
+						<DataGridTextColumn Binding="{Binding FriendlyName}" Foreground="White" />
+						<DataGridTextColumn Binding="{Binding Tip.Committer.When.DateTime}"
+																Foreground="Orange" FontWeight="Light"/>
+					</DataGrid.Columns>
+				</DataGrid>
+			</ScrollViewer>
+		</TabItem>
+	</TabControl>
+</UserControl>

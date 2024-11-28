@@ -15,7 +15,13 @@
 
  ![screenshot](/./screenshot.jpg)
 
+ ## 28.11.2024
+
+ - Merge functionality added
+ - updated screenshot
+
 ## TODOs
 
 - Colour Coding the State of uncommited files
 - Design an Icon
+

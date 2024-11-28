@@ -4,7 +4,6 @@ using LibGit2Sharp;
 using System;
 using System.Linq;
 using System.IO;
-using System.Text.RegularExpressions;
 using Avalonia.Threading;
 using Avalonia.Interactivity;
 using static MsBox.Avalonia.MessageBoxManager;
@@ -23,36 +22,37 @@ namespace gitClient {
       // Repo = null;
       Oldpath = Directory.GetCurrentDirectory();
       InitializeComponent();
-      if (File.Exists("lastpath")) {
-        var last = File.ReadAllText("lastpath");
+      if (File.Exists(".lastpath")) {
+        var last = File.ReadAllText(".lastpath");
         try {
           RefreshRepos(last);
-          systemWatch(last);
+          SystemWatch(last);
           if (Repo != null)
             FetchAll(Repo);
         }
         catch (Exception ex) {
-          GetMessageBoxStandard("error", ex.Message, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Error,
+          GetMessageBoxStandard("Error!", ex.Message, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Error,
             WindowStartupLocation.CenterOwner).ShowWindowDialogAsync(this);
         }
       }
 
       SetTimer();
-      Watcher.Created += onChange;
-      Watcher.Changed += onChange;
-      Watcher.Deleted += onChange;
-      Watcher.Renamed += onChange;
+      Watcher.Created += OnChange;
+      Watcher.Changed += OnChange;
+      Watcher.Deleted += OnChange;
+      Watcher.Renamed += OnChange;
     }
 
     public void RefreshRepos(string path) {
       Repo = new Repository(path);
       CurRepo.Text = Path.GetDirectoryName(Repo.Info.WorkingDirectory).Split("\\").Last();
+      CurRepo.Text = CurRepo.Text.Split("/").Last();
       CurBranch.Text = Repo.Branches.Where(b => b.IsCurrentRepositoryHead).First().FriendlyName;
       ctrlCommitLog.RefreshLog(Repo);
       ctrlBranchLog.RefreshBranches(Repo);
       ctrlFileState.RefreshFileState(Repo);
 
-      if (Repo.Branches.Where(b => b.IsCurrentRepositoryHead).First().IsTracking == true) {
+      if (Repo.Branches.Where(b => b.IsCurrentRepositoryHead).First().IsTracking) {
         //FetchAll(Repo);
         CtrlBtnPush.Content =
           $"Push {Repo.Branches.Where(b => b.IsCurrentRepositoryHead && b.IsTracking).First().TrackingDetails.AheadBy}";
@@ -61,26 +61,25 @@ namespace gitClient {
       }
 
       else {
-        CtrlBtnPush.Content = $"Push";
-        CtrlBtnPull.Content = $"Pull";
+        CtrlBtnPush.Content = "Push";
+        CtrlBtnPull.Content = "Pull";
       }
     }
 
     private async void BtnOpenRepo_Click(object? sender, RoutedEventArgs ev) {
       // var result = await new OpenFolderDialog().ShowAsync((Window)this.GetVisualRoot());
-      var tl = TopLevel.GetTopLevel(this);
-      var result = await tl.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions {
+      var result = await GetTopLevel(this).StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions {
         Title = "Open Repository",
       });
       try {
-        var res = result.FirstOrDefault().TryGetLocalPath().ToString();
+        var res = result.FirstOrDefault().TryGetLocalPath();
         RefreshRepos(res ?? "");
-        systemWatch(res ?? "");
+        SystemWatch(res ?? "");
         UiState(res ?? "");
         FetchAll(Repo);
       }
       catch (Exception e) {
-        GetMessageBoxStandard("Error", e.Message, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Error,
+        _ = GetMessageBoxStandard("Error!", e.Message, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Error,
           WindowStartupLocation.CenterOwner).ShowWindowDialogAsync(this);
       }
     }
@@ -98,7 +97,7 @@ namespace gitClient {
         var author = new Signature("gitorio", "git@rio", DateTime.Now);
         Repo.Commit("Repo Created with .gitignore", author, author);
         RefreshRepos(result ?? "");
-        systemWatch(result ?? "");
+        SystemWatch(result ?? "");
         UiState(result ?? "");
       }
       catch (Exception ex) {
@@ -111,7 +110,7 @@ namespace gitClient {
       try {
         if (Repo.Branches.Where(b => b.IsCurrentRepositoryHead).First().IsTracking) FetchAll(Repo);
         RefreshRepos(Repo.Info.WorkingDirectory);
-        systemWatch(Repo.Info.WorkingDirectory);
+        SystemWatch(Repo.Info.WorkingDirectory);
       }
       catch (Exception ex) {
         GetMessageBoxStandard("Error!", ex.Message, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Error,
@@ -130,11 +129,11 @@ namespace gitClient {
       about.ShowDialog(this);
     }
 
-    public void onChange(object sender, FileSystemEventArgs e) {
+    public void OnChange(object sender, FileSystemEventArgs e) {
       Dispatcher.UIThread.InvokeAsync(() => { RefreshRepos(Repo.Info.WorkingDirectory); });
     }
 
-    private void systemWatch(string path) {
+    private void SystemWatch(string path) {
       Watcher.Path = path;
       Watcher.IncludeSubdirectories = true;
       Watcher.EnableRaisingEvents = true;
@@ -195,7 +194,7 @@ namespace gitClient {
           WindowStartupLocation.CenterOwner).ShowWindowDialogAsync(this);
       }
 
-      Directory.SetCurrentDirectory(Oldpath);
+      if (Oldpath != null) Directory.SetCurrentDirectory(Oldpath);
     }
 
     private void Btn_Pull(object sender, RoutedEventArgs e) {
@@ -209,7 +208,7 @@ namespace gitClient {
           WindowStartupLocation.CenterOwner).ShowWindowDialogAsync(this);
       }
 
-      Directory.SetCurrentDirectory(Oldpath);
+      if (Oldpath != null) Directory.SetCurrentDirectory(Oldpath);
     }
 
     private void BtnCreateBranchFromRem(object sender, RoutedEventArgs e) {
@@ -218,11 +217,11 @@ namespace gitClient {
     }
 
     public static void UiState(string path) {
-      Directory.SetCurrentDirectory(Oldpath);
-      File.WriteAllText("lastpath", path.Trim());
+      if (Oldpath != null) Directory.SetCurrentDirectory(Oldpath);
+      File.WriteAllText(".lastpath", path.Trim());
     }
 
-    public static void FetchAll(Repository r) {
+    public static void FetchAll(Repository? r) {
       if (!r.Branches.Where(b => b.IsCurrentRepositoryHead).First().IsTracking) return;
 
       try {
@@ -230,21 +229,27 @@ namespace gitClient {
         ProcInvoker.Run("git", " fetch --all");
       }
       catch (Exception ex) {
-        //GetMessageBoxStandard("error", ex.Message).ShowAsync();
+        // ignored
       }
 
-      Directory.SetCurrentDirectory(Oldpath);
+      if (Oldpath != null) Directory.SetCurrentDirectory(Oldpath);
     }
 
-    private static void timedEvent(Object source, ElapsedEventArgs e) {
+    private static void TimedEvent(Object source, ElapsedEventArgs e) {
       FetchAll(Repo);
     }
 
     private static void SetTimer() {
       var timer = new Timer(600000);
-      timer.Elapsed += timedEvent;
+      timer.Elapsed += TimedEvent;
       timer.AutoReset = true;
       timer.Enabled = true;
+    }
+
+    private void BtnMergeBranch(object? sender, RoutedEventArgs e) {
+      // throw new NotImplementedException();
+      MergeWin win = new();
+      win.ShowDialog(this);
     }
   }
 }

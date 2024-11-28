@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace gitClient.views {
 
-  public record CommitLog(System.DateTime Date, string Author, string Message, string Mail, string ID);
+  public record CommitLog(System.DateTime Date, string Author, string Message, string Mail, string Id);
 
   public partial class LogView : UserControl {
     public LogView() {

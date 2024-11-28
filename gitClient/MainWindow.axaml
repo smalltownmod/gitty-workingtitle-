@@ -36,9 +36,10 @@
 				</MenuItem>
 				<MenuItem Header="Branches">
 					<MenuItem Header="Create local" Click="BtnBranchCreate"/>
-					<MenuItem Header="Create local from remote"
+					<MenuItem Header="Pull from remote"
 										Click="BtnCreateBranchFromRem"/>
 					<MenuItem Header="Switch" Click="BtnBranchSwitch" />
+					<MenuItem Header="Merge" Click="BtnMergeBranch"/>
 					<MenuItem Header="Delete" Click="BtnBranchDel" />
 				</MenuItem>
 				<MenuItem Header ="Settings" Click="BtnSettings_Click"/>
@@ -79,11 +80,7 @@
 								 FontWeight="Bold">
 						Branches
 					</TextBlock>
-				<!--<ScrollViewer Grid.Column="2"
-											Grid.Row="1"
-											Margin="10,0,0,0">-->
 					<views:BranchView Name="ctrlBranchLog" Grid.Column="2" Grid.Row="1"/>
-					<!--</ScrollViewer>-->
 					<TextBlock Grid.Column="3"
 										 Grid.Row="2"
 										 Margin="10,20,0,10"
@@ -102,8 +99,7 @@
 									Click="Btn_Refresh">
 						Fetch
 					</Button>
-					<!-- <Button Margin="10,0,0,0" Click="Btn_OpenCommitWin">Commit</Button> -->
-					<Button Margin="10,0,0,0" Click="Btn_Push" Name="CtrlBtnPush"></Button>
+					<Button Margin="0,0,0,0" Click="Btn_Push" Name="CtrlBtnPush"></Button>
 					<Button Click="Btn_Pull" Name="CtrlBtnPull">Pull</Button>
 				</WrapPanel>
 			</Grid>

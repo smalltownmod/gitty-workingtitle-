@@ -55,7 +55,7 @@
 								<Setter Property="Foreground" Value="White"></Setter>
 							</Style>
 						</Grid.Styles>
-						<TextBlock Text="{Binding ID}" Grid.Row="0"
+						<TextBlock Text="{Binding Id}" Grid.Row="0"
 											 Foreground="Magenta"/>
 						<TextBlock Text="{ Binding Mail }"  Grid.Row="1" />
 					</Grid>

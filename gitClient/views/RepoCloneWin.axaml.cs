@@ -19,7 +19,7 @@ namespace gitClient.views {
         MainWindow.Repo = new(ClonePath.Text);
         MainWindow.Watcher.Path = MainWindow.Repo.Info.WorkingDirectory;
         MainWindow.FetchAll(MainWindow.Repo);
-        MainWindow.UiState(ClonePath.Text);
+        if (ClonePath.Text != null) MainWindow.UiState(ClonePath.Text);
       }
       catch (Exception ex) {
         GetMessageBoxStandard("Error!", ex.Message, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Error,
@@ -35,11 +35,12 @@ namespace gitClient.views {
     }
 
     private async void Browse_OnClick(object? sender, RoutedEventArgs e) {
-      var res = await GetTopLevel(this).StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions());
+      var res = await GetTopLevel(this)!.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions());
       try {
         ClonePath.Text = res.First().TryGetLocalPath() ?? string.Empty;
       }
       catch (Exception ) {
+        //nur damit es nicht abraucht
       }
     }
   }

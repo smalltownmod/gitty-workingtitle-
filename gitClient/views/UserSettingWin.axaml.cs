@@ -17,9 +17,9 @@ namespace gitClient.views {
 		}
 		public void FirstOpen(Repository r) {
 			if (r != null) {
-				Signature Autor = r.Config.BuildSignature(System.DateTimeOffset.Now);
-				UsrNamBox.Text = Autor.Name;
-				UsrMailBox.Text = Autor.Email;	
+				Signature autor = r.Config.BuildSignature(System.DateTimeOffset.Now);
+				UsrNamBox.Text = autor.Name;
+				UsrMailBox.Text = autor.Email;	
 			}
 		}
 	}

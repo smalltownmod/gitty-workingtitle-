@@ -30,9 +30,12 @@
             </ScrollViewer>
             <Grid Grid.Row="2" ColumnDefinitions="Auto, Auto, Auto,Auto">
 
-                <Button Name="Add" Content="Add Selected" Click="Add_OnClick" />
-                <Button Grid.Column="1" Name="Unstage" Content="Unstage Selected" Click="Remove_OnClick" />
-                <Button Grid.Column="2" Content="Commit" Click="Commit_OnClick"/>
+                <Button Name="Add" Content="Add Selected" Click="Add_OnClick" 
+                        Margin = "0,0,2,0"/>
+                <Button Grid.Column="1" Name="Unstage" Content="Unstage Selected" Click="Remove_OnClick" 
+                        Margin="0,0,20,0"/>
+                <Button Grid.Column="2" Content="Commit" Click="Commit_OnClick"
+                        Margin="0,0,2,0"/>
                 <Button Grid.Column="3" Content="Revert" Click="Revert_OnCLick"/>
             </Grid>
         </Grid>

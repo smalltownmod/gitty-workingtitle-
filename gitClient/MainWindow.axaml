@@ -40,6 +40,7 @@
 										Click="BtnCreateBranchFromRem"/>
 					<MenuItem Header="Switch" Click="BtnBranchSwitch" />
 					<MenuItem Header="Merge" Click="BtnMergeBranch"/>
+					<MenuItem Header="Rebase" Click="BtnRebase"/>
 					<MenuItem Header="Delete" Click="BtnBranchDel" />
 				</MenuItem>
 				<MenuItem Header ="Settings" Click="BtnSettings_Click"/>

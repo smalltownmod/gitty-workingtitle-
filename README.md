@@ -20,6 +20,11 @@
  - Merge functionality added
  - updated screenshot
 
+ ## 16.12.2024
+
+ - stash functionality
+ - rebase functionality
+
 ## TODOs
 
 - Colour Coding the State of uncommited files

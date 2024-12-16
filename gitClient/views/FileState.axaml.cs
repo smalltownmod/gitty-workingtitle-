@@ -62,5 +62,18 @@ namespace gitClient.views {
       }
       Directory.SetCurrentDirectory(MainWindow.Oldpath);
     }
+
+    private void Stash_OnClick(object? sender, RoutedEventArgs e) {
+      Directory.SetCurrentDirectory(MainWindow.Repo.Info.WorkingDirectory);
+     ProcInvoker.Run("git", "stash");
+     Directory.SetCurrentDirectory(MainWindow.Oldpath);
+    }
+
+    private void Unstash_OnClick(object? sender, RoutedEventArgs e) {
+      Directory.SetCurrentDirectory(MainWindow.Repo.Info.WorkingDirectory);
+      ProcInvoker.Run("git", $"stash apply");
+      ProcInvoker.Run("git", $"stash drop");
+      Directory.SetCurrentDirectory(MainWindow.Oldpath);
+    }
   }
 }

@@ -5,40 +5,43 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="gitClient.views.FileState">
 
-    <Panel>
-        <Grid RowDefinitions="auto,300,*" ColumnDefinitions="25,auto">
-			<CheckBox Grid.Row="0"
-				Name="Supercheck" IsCheckedChanged="Supercheck_change"/>
-					<TextBlock Text="Select All" FontWeight="Bold" Grid.Column="1"
-										 VerticalAlignment="Center"/>
-            <ScrollViewer Grid.Row="1" Grid.Column="1">
+  <Panel>
+    <Grid RowDefinitions="auto,300,*" ColumnDefinitions="25,auto">
+      <CheckBox Grid.Row="0"
+                Name="Supercheck" IsCheckedChanged="Supercheck_change" />
+      <TextBlock Text="Select All" FontWeight="Bold" Grid.Column="1"
+                 VerticalAlignment="Center" />
+      <ScrollViewer Grid.Row="1" Grid.Column="1">
 
-                <ItemsControl ItemsSource="{Binding}" Name="dgvFileState">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid ColumnDefinitions="*,Auto">
-                                <CheckBox Grid.Column="0" Content="{Binding Path}" Name="checky"
-                                          IsChecked="{Binding Checked, Mode = TwoWay}" 
-                                          />
-                                <TextBlock Name="StateBlock" Text="{Binding State}" Grid.Column="1" 
-                                           Margin="40 0 0 0" VerticalAlignment="Center"
-                                           HorizontalAlignment="Right"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-            <Grid Grid.Row="2" ColumnDefinitions="Auto, Auto, Auto,Auto">
+        <ItemsControl ItemsSource="{Binding}" Name="dgvFileState">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Grid ColumnDefinitions="*,Auto">
+                <CheckBox Grid.Column="0" Content="{Binding Path}" Name="checky"
+                          IsChecked="{Binding Checked, Mode = TwoWay}" />
+                <TextBlock Name="StateBlock" Text="{Binding State}" Grid.Column="1"
+                           Margin="40 0 0 0" VerticalAlignment="Center"
+                           HorizontalAlignment="Right" />
+              </Grid>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </ScrollViewer>
+      <Grid Grid.Row="2" ColumnDefinitions="Auto, Auto, Auto,Auto, Auto, Auto">
 
-                <Button Name="Add" Content="Add Selected" Click="Add_OnClick" 
-                        Margin = "0,0,2,0"/>
-                <Button Grid.Column="1" Name="Unstage" Content="Unstage Selected" Click="Remove_OnClick" 
-                        Margin="0,0,20,0"/>
-                <Button Grid.Column="2" Content="Commit" Click="Commit_OnClick"
-                        Margin="0,0,2,0"/>
-                <Button Grid.Column="3" Content="Revert" Click="Revert_OnCLick"/>
-            </Grid>
-        </Grid>
-    </Panel>
+        <Button Name="Add" Content="Add Selected" Click="Add_OnClick"
+                Margin="0,0,2,0" />
+        <Button Grid.Column="1" Name="Unstage" Content="Unstage Selected" Click="Remove_OnClick"
+                Margin="0,0,2,0" />
+        <Button Grid.Column="2" Margin="0,0,2,0"
+                Content="Stash" Click="Stash_OnClick"/>
+        <Button Grid.Column="3" Margin="0,0,10,0"
+                Content="Unstash" Click="Unstash_OnClick"/>
+        <Button Grid.Column="4" Content="Commit" Click="Commit_OnClick"
+                Margin="0,0,2,0" />
+        <Button Grid.Column="5" Content="Revert" Click="Revert_OnCLick" />
+      </Grid>
+    </Grid>
+  </Panel>
 
 </UserControl>

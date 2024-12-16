@@ -251,5 +251,10 @@ namespace gitClient {
       MergeWin win = new();
       win.ShowDialog(this);
     }
+
+    private void BtnRebase(object? sender, RoutedEventArgs e) {
+      RebaseWin win = new();
+      win.ShowDialog(this);
+    }
   }
 }

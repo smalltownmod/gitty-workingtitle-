@@ -12,31 +12,69 @@
       <TextBlock Text="Select All" FontWeight="Bold" Grid.Column="1"
                  VerticalAlignment="Center" />
       <ScrollViewer Grid.Row="1" Grid.Column="1">
+        <Grid Grid.RowDefinitions="Auto, Auto">
+          <StackPanel Name="StagePanel" IsVisible="False" Margin="0,0,0,30">
 
-        <ItemsControl ItemsSource="{Binding}" Name="dgvFileState">
-          <ItemsControl.ItemTemplate>
-            <DataTemplate>
-              <Grid ColumnDefinitions="*,Auto">
-                <CheckBox Grid.Column="0" Content="{Binding Path}" Name="checky"
-                          IsChecked="{Binding Checked, Mode = TwoWay}" />
-                <TextBlock Name="StateBlock" Text="{Binding State}" Grid.Column="1"
-                           Margin="40 0 0 0" VerticalAlignment="Center"
-                           HorizontalAlignment="Right" />
-              </Grid>
-            </DataTemplate>
-          </ItemsControl.ItemTemplate>
-        </ItemsControl>
+            <ItemsControl ItemsSource="{Binding}" Name="dgvFileStateNewStaged"
+                          Margin="0,0,0,5">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Grid ColumnDefinitions="*,Auto">
+                    <!-- <Grid.Styles> -->
+                    <!--   <Style Selector="CheckBox:focus:pointerover"> -->
+                    <!--     <Setter Property="Foreground" Value="Lime"/> -->
+                    <!--   </Style> -->
+                    <!-- </Grid.Styles> -->
+                    <CheckBox Grid.Column="0" Content="{Binding Path}" Name="AddChecky"
+                              IsChecked="{Binding Checked, Mode = TwoWay}"
+                              Foreground="Lime" />
+                    <TextBlock Name="StateBlock" Text="{Binding State}" Grid.Column="1"
+                               Margin="40 0 0 0" VerticalAlignment="Center"
+                               HorizontalAlignment="Right" />
+                  </Grid>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding}" Name="dgvFileStateDelStage">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Grid ColumnDefinitions="*,Auto">
+                    <CheckBox Grid.Column="0" Content="{Binding Path}" Name="checky"
+                              IsChecked="{Binding Checked, Mode = TwoWay}"
+                              Foreground="Crimson" />
+                    <TextBlock Name="StateBlock" Text="{Binding State}" Grid.Column="1"
+                               Margin="40 0 0 0" VerticalAlignment="Center"
+                               HorizontalAlignment="Right" />
+                  </Grid>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+          <ItemsControl Grid.Row="1" ItemsSource="{Binding}" Name="dgvFileStateUnstaged">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Grid ColumnDefinitions="*,Auto">
+                  <CheckBox Grid.Column="0" Content="{Binding Path}" Name="checky"
+                            IsChecked="{Binding Checked, Mode = TwoWay}" />
+                  <TextBlock Name="StateBlock" Text="{Binding State}" Grid.Column="1"
+                             Margin="40 0 0 0" VerticalAlignment="Center"
+                             HorizontalAlignment="Right" />
+                </Grid>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </Grid>
       </ScrollViewer>
       <Grid Grid.Row="2" ColumnDefinitions="Auto, Auto, Auto,Auto, Auto, Auto">
 
-        <Button Name="Add" Content="Add Selected" Click="Add_OnClick"
+        <Button Name="Add" Content="Stage" Click="Add_OnClick"
                 Margin="0,0,2,0" />
-        <Button Grid.Column="1" Name="Unstage" Content="Unstage Selected" Click="Remove_OnClick"
+        <Button Grid.Column="1" Name="Unstage" Content="Unstage" Click="Remove_OnClick"
                 Margin="0,0,2,0" />
         <Button Grid.Column="2" Margin="0,0,2,0"
-                Content="Stash" Click="Stash_OnClick"/>
+                Content="Stash" Click="Stash_OnClick" />
         <Button Grid.Column="3" Margin="0,0,10,0"
-                Content="Unstash" Click="Unstash_OnClick"/>
+                Content="Unstash" Click="Unstash_OnClick" />
         <Button Grid.Column="4" Content="Commit" Click="Commit_OnClick"
                 Margin="0,0,2,0" />
         <Button Grid.Column="5" Content="Revert" Click="Revert_OnCLick" />

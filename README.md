@@ -3,30 +3,35 @@
 - a little gitClient
 - work in progress
 
-## 27.10.2024:
 
-- Remote functions are now working via ssh (please make sure to have ssh connection established and keys exchanged)
-- Linux Version now added (tested under mint)
-
-## 19.11.2024
-
-- Select All Checkbox added
-- Revert Button added
 
  ![screenshot](/./screenshot.jpg)
 
- ## 28.11.2024
+## 04.02.2025
 
- - Merge functionality added
- - updated screenshot
+- uncommited changes output is now sorted and colour coded
 
  ## 16.12.2024
 
  - stash functionality
  - rebase functionality
 
+ ## 28.11.2024
+
+ - Merge functionality added
+ - updated screenshot
+
+## 19.11.2024
+
+- Select All Checkbox added
+- Revert Button added
+
+## 27.10.2024:
+
+- Remote functions are now working via ssh (please make sure to have ssh connection established and keys exchanged)
+- Linux Version now added (tested under mint)
+
 ## TODOs
 
-- Colour Coding the State of uncommited files
 - Design an Icon
 

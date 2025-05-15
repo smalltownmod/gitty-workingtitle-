@@ -13,7 +13,7 @@ public partial class CommitWin : Window {
 
   private void Btn_Commit(object sender, Avalonia.Interactivity.RoutedEventArgs ev) {
     try {
-      Signature author = MainWindow.Repo.Config.BuildSignature(DateTimeOffset.Now);
+      Signature author = MainWindow.Repo!.Config.BuildSignature(DateTimeOffset.Now);
       MainWindow.Repo.Commit(MsgCommit.Text, author, author);
       Close();
     }

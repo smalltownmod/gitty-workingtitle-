@@ -13,19 +13,20 @@ namespace gitClient.views {
     public BranchFromRemWin() {
       InitializeComponent();
       try {
-        ComBranchList.ItemsSource = Repo.Branches.Where(b => b.IsRemote).ToList();
+        ComBranchList.ItemsSource = Repo!.Branches.Where(b => b.IsRemote).ToList();
         ComBranchList.SelectedIndex = 0;
       }
       catch {
+        //
       }
     }
 
     private void BtnPull(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
-      var newBranch = ComBranchList.SelectedItem.ToString().Split("/").Last();
+      var newBranch = ComBranchList.SelectedItem!.ToString()!.Split("/").Last();
       try {
-        Directory.SetCurrentDirectory(Repo.Info.WorkingDirectory);
+        Directory.SetCurrentDirectory(Repo!.Info.WorkingDirectory);
         ProcInvoker.Run("git", $" pull origin {newBranch}");
-        Directory.SetCurrentDirectory(Oldpath);
+        Directory.SetCurrentDirectory(Oldpath!);
         Commands.Checkout(Repo, newBranch);
 
         Close();

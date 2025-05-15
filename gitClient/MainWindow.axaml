@@ -47,11 +47,15 @@
 				<MenuItem Header="?"  Click="BtnAbout_Click"/>
 			</Menu>
 			<WrapPanel Margin="10">
-				<TextBlock Text="Current Repo: "/>
-				<TextBlock Name="CurRepo" FontStyle="Italic" FontWeight="Bold" />
-				<TextBlock Text="("/>
-				<TextBlock Name="CurBranch" Foreground="LawnGreen" FontWeight="Bold"/>
-				<TextBlock Text=")"/>
+				<TextBlock Text="Current Repo: "
+				           VerticalAlignment="Center"/>
+				<TextBlock Name="CurRepo" FontStyle="Italic" FontWeight="Bold" VerticalAlignment="Center"/>
+				<TextBlock Text="(" VerticalAlignment="Center"/>
+				<TextBlock Name="CurBranch" Foreground="LawnGreen" FontWeight="Bold"
+				           VerticalAlignment="Center"/>
+				<TextBlock Text=")" VerticalAlignment="Center"/>
+				<Button Content="Open in VSC" Click="Btn_VscOpen" 
+				        Margin="15, 0, 0,0"/>
 			</WrapPanel>
 		</StackPanel>
 			<Grid ColumnDefinitions ="   *,1, * "

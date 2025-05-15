@@ -39,7 +39,7 @@ namespace gitClient.views {
       try {
         ClonePath.Text = res.First().TryGetLocalPath() ?? string.Empty;
       }
-      catch (Exception ) {
+      catch (Exception) {
         //nur damit es nicht abraucht
       }
     }

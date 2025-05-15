@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace gitClient.views {
   public partial class FileState : UserControl {
-    public List<ItemToCommit> Items { get; set; }
+    public List<ItemToCommit> Items { get; set; } = null!;
 
     public FileState() {
       InitializeComponent();
@@ -24,7 +24,7 @@ namespace gitClient.views {
           return new ItemToCommit(true, r.State.ToString(), r.FilePath);
         }).ToList();
 
-      if (Items.Where(f => f.State.EndsWith('x')).Count() > 0)
+      if (Items.Count(f => f.State.EndsWith('x')) > 0)
         StagePanel.IsVisible = true;
       else StagePanel.IsVisible = false;
 
@@ -36,18 +36,18 @@ namespace gitClient.views {
 
 
     private void Add_OnClick(object? sender, RoutedEventArgs e) {
-      Directory.SetCurrentDirectory(MainWindow.Repo.Info.WorkingDirectory);
+      Directory.SetCurrentDirectory(MainWindow.Repo!.Info.WorkingDirectory);
       foreach (var item in Items.Where(i => i.Checked))
         ProcInvoker.Run("git", $" add {item.Path}");
-      Directory.SetCurrentDirectory(MainWindow.Oldpath);
+      Directory.SetCurrentDirectory(MainWindow.Oldpath!);
       Supercheck.IsChecked = false;
     }
 
     private void Remove_OnClick(object? sender, RoutedEventArgs e) {
-      Directory.SetCurrentDirectory(MainWindow.Repo.Info.WorkingDirectory);
+      Directory.SetCurrentDirectory(MainWindow.Repo!.Info.WorkingDirectory);
       foreach (var item in Items.Where(i => i.Checked))
         ProcInvoker.Run("git", $" restore --staged {item.Path}");
-      Directory.SetCurrentDirectory(MainWindow.Oldpath);
+      Directory.SetCurrentDirectory(MainWindow.Oldpath!);
       Supercheck.IsChecked = false;
     }
 
@@ -58,31 +58,31 @@ namespace gitClient.views {
     }
 
     private void Supercheck_change(object? sender, RoutedEventArgs e) {
-      RefreshFileState(MainWindow.Repo);
+      RefreshFileState(MainWindow.Repo!);
     }
 
     private void Revert_OnCLick(object? sender, RoutedEventArgs e) {
-      Directory.SetCurrentDirectory(MainWindow.Repo.Info.WorkingDirectory);
+      Directory.SetCurrentDirectory(MainWindow.Repo!.Info.WorkingDirectory);
       foreach (var item in Items.Where(i => i.Checked)) {
         ProcInvoker.Run("git", $"restore --staged {item.Path}");
         ProcInvoker.Run("git", $"restore {item.Path}");
       }
 
-      Directory.SetCurrentDirectory(MainWindow.Oldpath);
+      Directory.SetCurrentDirectory(MainWindow.Oldpath!);
       Supercheck.IsChecked = false;
     }
 
     private void Stash_OnClick(object? sender, RoutedEventArgs e) {
-      Directory.SetCurrentDirectory(MainWindow.Repo.Info.WorkingDirectory);
+      Directory.SetCurrentDirectory(MainWindow.Repo!.Info.WorkingDirectory);
       ProcInvoker.Run("git", "stash");
-      Directory.SetCurrentDirectory(MainWindow.Oldpath);
+      Directory.SetCurrentDirectory(MainWindow.Oldpath!);
     }
 
     private void Unstash_OnClick(object? sender, RoutedEventArgs e) {
-      Directory.SetCurrentDirectory(MainWindow.Repo.Info.WorkingDirectory);
+      Directory.SetCurrentDirectory(MainWindow.Repo!.Info.WorkingDirectory);
       ProcInvoker.Run("git", $"stash apply");
       ProcInvoker.Run("git", $"stash drop");
-      Directory.SetCurrentDirectory(MainWindow.Oldpath);
+      Directory.SetCurrentDirectory(MainWindow.Oldpath!);
     }
   }
 }

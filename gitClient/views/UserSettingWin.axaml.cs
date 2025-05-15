@@ -16,11 +16,10 @@ namespace gitClient.views {
 			Close();
 		}
 		public void FirstOpen(Repository r) {
-			if (r != null) {
-				Signature autor = r.Config.BuildSignature(System.DateTimeOffset.Now);
-				UsrNamBox.Text = autor.Name;
-				UsrMailBox.Text = autor.Email;	
-			}
+			if (r == null!) return;
+			Signature autor = r.Config.BuildSignature(System.DateTimeOffset.Now);
+			UsrNamBox.Text = autor.Name;
+			UsrMailBox.Text = autor.Email;
 		}
 	}
 }

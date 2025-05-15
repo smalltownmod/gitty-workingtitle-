@@ -9,10 +9,11 @@ namespace gitClient.views {
     public BranchDeleteWin() {
       InitializeComponent();
       try {
-        ComBranches.ItemsSource = MainWindow.Repo.Branches.Where(b => !b.IsCurrentRepositoryHead).ToList();
+        ComBranches.ItemsSource = MainWindow.Repo!.Branches.Where(b => !b.IsCurrentRepositoryHead).ToList();
         ComBranches.SelectedIndex = 0;
       }
       catch {
+        //
       }
     }
 
@@ -23,7 +24,7 @@ namespace gitClient.views {
     private void BtnDelete(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
       try {
         var branchname = ComBranches.SelectedItem?.ToString() ?? string.Empty;
-        MainWindow.Repo.Branches.Remove(branchname);
+        MainWindow.Repo!.Branches.Remove(branchname);
       }
       catch (Exception ex) {
         GetMessageBoxStandard("error", ex.Message, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Error,

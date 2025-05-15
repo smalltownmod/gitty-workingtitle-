@@ -28,7 +28,7 @@
                     <CheckBox Grid.Column="0" Content="{Binding Path}" Name="AddChecky"
                               IsChecked="{Binding Checked, Mode = TwoWay}"
                               Foreground="Lime" />
-                    <TextBlock Name="StateBlock" Text="{Binding State}" Grid.Column="1"
+                   <TextBlock Name="StateBlock" Text="{Binding State}" Grid.Column="1"
                                Margin="40 0 0 0" VerticalAlignment="Center"
                                HorizontalAlignment="Right" />
                   </Grid>
@@ -67,9 +67,11 @@
       </ScrollViewer>
       <Grid Grid.Row="2" ColumnDefinitions="Auto, Auto, Auto,Auto, Auto, Auto">
 
-        <Button Name="Add" Content="Stage" Click="Add_OnClick"
+        <Button Name="Add" Content="+" Click="Add_OnClick"
+                ToolTip.Tip="Stage Selected"
                 Margin="0,0,2,0" />
-        <Button Grid.Column="1" Name="Unstage" Content="Unstage" Click="Remove_OnClick"
+        <Button Grid.Column="1" Name="Unstage" Content="-" Click="Remove_OnClick"
+                ToolTip.Tip="Unstage Selected"
                 Margin="0,0,2,0" />
         <Button Grid.Column="2" Margin="0,0,2,0"
                 Content="Stash" Click="Stash_OnClick" />

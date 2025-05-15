@@ -11,9 +11,8 @@ namespace gitClient.views {
       InitializeComponent();
     }
     public void RefreshLog(Repository repo) {
-      dgvLog.ItemsSource = repo.Commits.Select((r) => {
-       return new CommitLog( r.Author.When.DateTime, r.Author.Name, r.Message.Trim(), r.Author.Email, r.Id.ToString());
-      }).ToList();
+      dgvLog.ItemsSource = repo.Commits.Select((r) => 
+        new CommitLog( r.Author.When.DateTime, r.Author.Name, r.Message.Trim(), r.Author.Email, r.Id.ToString())).ToList();
     }
   }
 }

@@ -4,6 +4,7 @@ using LibGit2Sharp;
 using System;
 using System.Linq;
 using System.IO;
+using System.Runtime.InteropServices;
 using Avalonia.Threading;
 using Avalonia.Interactivity;
 using static MsBox.Avalonia.MessageBoxManager;
@@ -19,7 +20,6 @@ namespace gitClient {
     public static string? Oldpath { get; private set; }
 
     public MainWindow() {
-      // Repo = null;
       Oldpath = Directory.GetCurrentDirectory();
       InitializeComponent();
       if (File.Exists(".lastpath")) {
@@ -45,9 +45,9 @@ namespace gitClient {
 
     public void RefreshRepos(string path) {
       Repo = new Repository(path);
-      CurRepo.Text = Path.GetDirectoryName(Repo.Info.WorkingDirectory).Split("\\").Last();
-      CurRepo.Text = CurRepo.Text.Split("/").Last();
-      CurBranch.Text = Repo.Branches.Where(b => b.IsCurrentRepositoryHead).First().FriendlyName;
+      CurRepo.Text = Path.GetDirectoryName(Repo.Info.WorkingDirectory)?.Split("\\").Last();
+      CurRepo.Text = CurRepo.Text?.Split("/").Last();
+      CurBranch.Text = Repo.Branches.First(b => b.IsCurrentRepositoryHead).FriendlyName;
       ctrlCommitLog.RefreshLog(Repo);
       ctrlBranchLog.RefreshBranches(Repo);
       ctrlFileState.RefreshFileState(Repo);
@@ -67,12 +67,11 @@ namespace gitClient {
     }
 
     private async void BtnOpenRepo_Click(object? sender, RoutedEventArgs ev) {
-      // var result = await new OpenFolderDialog().ShowAsync((Window)this.GetVisualRoot());
-      var result = await GetTopLevel(this).StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions {
+      var result = await GetTopLevel(this)!.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions {
         Title = "Open Repository",
       });
       try {
-        var res = result.FirstOrDefault().TryGetLocalPath();
+        var res = result.FirstOrDefault()!.TryGetLocalPath();
         RefreshRepos(res ?? "");
         SystemWatch(res ?? "");
         UiState(res ?? "");
@@ -85,12 +84,11 @@ namespace gitClient {
     }
 
     private async void BtnCreateRepo(object sender, RoutedEventArgs ev) {
-      // var result = await new OpenFolderDialog().ShowAsync((Window)this.GetVisualRoot());
-      var res = await GetTopLevel(this).StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions {
+      var res = await GetTopLevel(this)!.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions {
         Title = "Create Repository",
       });
       try {
-        var result = res.FirstOrDefault().TryGetLocalPath();
+        var result = res.FirstOrDefault()!.TryGetLocalPath();
         Repo = new Repository(Repository.Init(result));
         File.Copy(@".gitignore", result + "/.gitignore");
         Commands.Stage(Repo, ".gitignore");
@@ -108,7 +106,7 @@ namespace gitClient {
 
     private void Btn_Refresh(object sender, RoutedEventArgs ev) {
       try {
-        if (Repo.Branches.Where(b => b.IsCurrentRepositoryHead).First().IsTracking) FetchAll(Repo);
+        if (Repo!.Branches.First(b => b.IsCurrentRepositoryHead).IsTracking) FetchAll(Repo);
         RefreshRepos(Repo.Info.WorkingDirectory);
         SystemWatch(Repo.Info.WorkingDirectory);
       }
@@ -120,7 +118,7 @@ namespace gitClient {
 
     private void BtnSettings_Click(object sender, RoutedEventArgs ev) {
       UserSettingWin userSetting = new();
-      userSetting.FirstOpen(Repo);
+      userSetting.FirstOpen(Repo!);
       userSetting.ShowDialog(this);
     }
 
@@ -184,7 +182,7 @@ namespace gitClient {
     }
 
     private void Btn_Push(object sender, RoutedEventArgs e) {
-      var curBranch = Repo.Branches.Where(b => b.IsCurrentRepositoryHead).First().FriendlyName.ToString();
+      var curBranch = Repo!.Branches.First(b => b.IsCurrentRepositoryHead).FriendlyName.ToString();
       Directory.SetCurrentDirectory(Repo.Info.WorkingDirectory);
       try {
         ProcInvoker.Run("git", $" push -u origin {curBranch}");
@@ -199,7 +197,7 @@ namespace gitClient {
 
     private void Btn_Pull(object sender, RoutedEventArgs e) {
       try {
-        var curBranch = Repo.Branches.Where(b => b.IsCurrentRepositoryHead).First();
+        var curBranch = Repo!.Branches.First(b => b.IsCurrentRepositoryHead);
         Directory.SetCurrentDirectory(Repo.Info.WorkingDirectory);
         ProcInvoker.Run("git", $" pull origin {curBranch}");
       }
@@ -228,7 +226,7 @@ namespace gitClient {
         Directory.SetCurrentDirectory(Repo.Info.WorkingDirectory);
         ProcInvoker.Run("git", " fetch --all");
       }
-      catch (Exception ex) {
+      catch (Exception ) {
         // ignored
       }
 
@@ -241,13 +239,12 @@ namespace gitClient {
 
     private static void SetTimer() {
       var timer = new Timer(600000);
-      timer.Elapsed += TimedEvent;
+      timer.Elapsed += TimedEvent!;
       timer.AutoReset = true;
       timer.Enabled = true;
     }
 
     private void BtnMergeBranch(object? sender, RoutedEventArgs e) {
-      // throw new NotImplementedException();
       MergeWin win = new();
       win.ShowDialog(this);
     }
@@ -255,6 +252,16 @@ namespace gitClient {
     private void BtnRebase(object? sender, RoutedEventArgs e) {
       RebaseWin win = new();
       win.ShowDialog(this);
+    }
+
+    private void Btn_VscOpen(object? sender, RoutedEventArgs e) {
+      Directory.SetCurrentDirectory(Repo!.Info.WorkingDirectory);
+      if (OperatingSystem.IsLinux())
+        ProcInvoker.Run("code", " .");
+      else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        ProcInvoker.Run("pwsh", $"/c code .");
+
+      Directory.SetCurrentDirectory(Oldpath!);
     }
   }
 }

@@ -2,7 +2,7 @@ using Avalonia.Controls;
 
 namespace gitClient.views {
   public partial class OpenRepWin : Window {
-    public static string RepoPath { get; set; }
+    public static string RepoPath{ get; set; }
     public OpenRepWin() {
       InitializeComponent();
     }

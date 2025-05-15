@@ -15,7 +15,7 @@ namespace gitClient.views {
     private void BtnCreateBranch(object sender, RoutedEventArgs ev) {
       try {
         Repo.CreateBranch(NewBranch.Text);
-        Commands.Checkout(Repo, Repo.Branches[NewBranch.Text]);
+        Commands.Checkout(Repo, Repo!.Branches[NewBranch.Text]);
         Close();
       }
       catch (Exception ex) {

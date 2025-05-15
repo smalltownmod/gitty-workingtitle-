@@ -11,10 +11,11 @@ namespace gitClient.views {
       InitializeComponent();
       try {
         ComBranchList.ItemsSource =
-          MainWindow.Repo.Branches.Where(b => !b.IsCurrentRepositoryHead && !b.IsRemote).ToList();
+          MainWindow.Repo!.Branches.Where(b => !b.IsCurrentRepositoryHead && !b.IsRemote).ToList();
         ComBranchList.SelectedIndex = 0;
       }
       catch {
+        //
       }
     }
 
@@ -24,8 +25,8 @@ namespace gitClient.views {
 
     private void BtnSwitch(object sender, Avalonia.Interactivity.RoutedEventArgs e) {
       try {
-        var branchname = ComBranchList.SelectedItem.ToString();
-        var branch = MainWindow.Repo.Branches[branchname];
+        var branchname = ComBranchList.SelectedItem!.ToString();
+        var branch = MainWindow.Repo!.Branches[branchname];
         Commands.Checkout(MainWindow.Repo, branch);
         MainWindow.FetchAll(MainWindow.Repo);
       }

@@ -1,0 +1,27 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Width="400"
+				Height="200"
+        x:Class="gitClient.views.CommitWin"
+				WindowStartupLocation="CenterOwner"
+        Title="Commit">
+	<Panel>
+		<ExperimentalAcrylicBorder IsHitTestVisible="False">
+			<ExperimentalAcrylicBorder.Material>
+				<ExperimentalAcrylicMaterial
+					BackgroundSource="Digger"
+					TintColor="Black"
+					TintOpacity="1"
+					MaterialOpacity="0.65"/>
+			</ExperimentalAcrylicBorder.Material>
+		</ExperimentalAcrylicBorder>	
+	<StackPanel Margin="20">
+		<TextBox Watermark="Commit Message" Height="100" AcceptsReturn="True"
+						 Name="MsgCommit"/>
+		<WrapPanel>
+			<Button Click="Btn_Commit">Commit Selected</Button>
+			<Button Click="Btn_Cancel">Cancel</Button>
+		</WrapPanel>
+	</StackPanel>
+	</Panel>
+</Window>

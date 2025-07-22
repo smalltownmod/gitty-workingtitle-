@@ -52,6 +52,7 @@ namespace gitClient.views {
     }
 
     private void Commit_OnClick(object? sender, RoutedEventArgs e) {
+      MainWindow.FetchAll(MainWindow.Repo);
       var comwin = new CommitWin();
       comwin.ShowDialog((VisualRoot as Window)!);
       Supercheck.IsChecked = false;

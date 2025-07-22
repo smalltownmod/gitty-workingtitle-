@@ -1,0 +1,34 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Width="400" Height="200"
+				WindowStartupLocation="CenterOwner"
+        x:Class="gitClient.views.UserSettingWin"
+        Title="User Settings"
+				TransparencyLevelHint="AcrylicBlur"
+				Background="Transparent">
+	
+		<Window.Styles>
+			<Style Selector="TitleBar">
+				<Setter Property="Background" Value="Black"></Setter> 
+			</Style>
+		</Window.Styles>
+		<Panel>
+			<ExperimentalAcrylicBorder IsHitTestVisible="False">
+				<ExperimentalAcrylicBorder.Material>
+					<ExperimentalAcrylicMaterial
+						BackgroundSource="Digger"
+						TintColor="Black"
+						TintOpacity="1"
+						MaterialOpacity="0.75"/>
+				</ExperimentalAcrylicBorder.Material>
+			</ExperimentalAcrylicBorder>
+			<StackPanel Margin="40">
+				<TextBox  Watermark="UserName" Name="UsrNamBox"/>
+				<TextBox Watermark="Email" Name="UsrMailBox" Margin="0,0,0,10"/>
+				<WrapPanel Margin="0,10">
+					<Button Click="BtnSubmit_Click">Submit</Button>
+					<Button Click="BtnCancel_Click">Cancel</Button>
+				</WrapPanel>
+			</StackPanel>
+		</Panel>
+	</Window>

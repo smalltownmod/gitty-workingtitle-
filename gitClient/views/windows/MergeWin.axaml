@@ -1,0 +1,35 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStartupLocation="CenterOwner"
+        x:Class="gitClient.views.MergeWin"
+        Title="Merge Branch"
+        Width="400" Height="130"
+        Background="Transparent"
+        TransparencyLevelHint="AcrylicBlur">
+  <Panel>
+    <ExperimentalAcrylicBorder IsHitTestVisible="False">
+      <ExperimentalAcrylicBorder.Material>
+        <ExperimentalAcrylicMaterial
+          BackgroundSource="Digger"
+          TintColor="Black"
+          TintOpacity="1"
+          MaterialOpacity="0.65" />
+      </ExperimentalAcrylicBorder.Material>
+    </ExperimentalAcrylicBorder>
+    <StackPanel Margin="40,20">
+      <!-- <TextBlock Text="Merge Selected Branch into current" />     -->
+      <TextBlock Name="MergeBlock" />
+      <ComboBox Name="ComBranchList" SelectedIndex="0">
+        <ComboBox.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding FriendlyName}" Name="BranchSelect"></TextBlock>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+      <WrapPanel>
+        <Button Click="BtnMerge">Merge</Button>
+        <Button Click="BtnCancel">Cancel</Button>
+      </WrapPanel>
+    </StackPanel>
+  </Panel>
+</Window>

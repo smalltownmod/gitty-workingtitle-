@@ -1,7 +1,7 @@
-﻿using ReactiveUI;
+﻿
 
 namespace gitClient.model {
-  public class ItemToCommit :ReactiveObject {
+  public class ItemToCommit  {
     public bool Checked { get; set; }
     public string State { get; set; }
     public string Path { get; set; }

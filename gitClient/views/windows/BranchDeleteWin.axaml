@@ -1,0 +1,33 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Width="400" Height="130"
+        x:Class="gitClient.views.BranchDeleteWin"
+        Title="BranchDeleteWin"
+        WindowStartupLocation="CenterOwner"
+				TransparencyLevelHint="AcrylicBlur"
+				Background="Transparent">
+	<Panel>
+		<ExperimentalAcrylicBorder IsHitTestVisible="False">
+			<ExperimentalAcrylicBorder.Material>
+				<ExperimentalAcrylicMaterial
+					BackgroundSource="Digger"
+					TintColor="Black"
+					TintOpacity="1"
+					MaterialOpacity="0.65"/>
+			</ExperimentalAcrylicBorder.Material>
+		</ExperimentalAcrylicBorder>
+		<StackPanel Margin="40">
+			<ComboBox  Name="ComBranches" SelectedIndex="0">
+				<ComboBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding FriendlyName}" Name="BranchSelect"></TextBlock>
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+			</ComboBox>
+			<WrapPanel>
+				<Button Click="BtnDelete">Delete</Button>
+				<Button Click="BtnCancel" >Cancel</Button>
+			</WrapPanel>
+		</StackPanel>
+	</Panel>
+</Window>

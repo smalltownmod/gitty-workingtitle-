@@ -20,14 +20,12 @@ namespace gitClient.views {
         MainWindow.Watcher.Path = MainWindow.Repo.Info.WorkingDirectory;
         MainWindow.FetchAll(MainWindow.Repo);
         if (ClonePath.Text != null) MainWindow.UiState(ClonePath.Text);
+        Close();
       }
       catch (Exception ex) {
         GetMessageBoxStandard("Error!", ex.Message, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Error,
           WindowStartupLocation.CenterOwner).ShowWindowDialogAsync(this);
       }
-
-
-      Close();
     }
 
     private void Cancel_OnClick(object? sender, RoutedEventArgs e) {

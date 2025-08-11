@@ -67,12 +67,12 @@
       </ScrollViewer>
       <Grid Grid.Row="2" ColumnDefinitions="Auto, Auto, Auto,Auto, Auto, Auto">
 
-        <Button Name="Add" Content="+" Click="Add_OnClick"
-                ToolTip.Tip="Stage Selected"
-                Margin="0,0,2,0" />
-        <Button Grid.Column="1" Name="Unstage" Content="-" Click="Remove_OnClick"
-                ToolTip.Tip="Unstage Selected"
-                Margin="0,0,2,0" />
+        <!-- <Button Name="Add" Content="+" Click="Add_OnClick" -->
+        <!--         ToolTip.Tip="Stage Selected" -->
+        <!--         Margin="0,0,2,0" /> -->
+        <!-- <Button Grid.Column="1" Name="Unstage" Content="-" Click="Remove_OnClick" -->
+        <!--         ToolTip.Tip="Unstage Selected" -->
+        <!--         Margin="0,0,2,0" /> -->
         <Button Grid.Column="2" Margin="0,0,2,0"
                 Content="Stash" Click="Stash_OnClick" />
         <Button Grid.Column="3" Margin="0,0,10,0"

@@ -10,7 +10,6 @@ using Avalonia.Interactivity;
 using static MsBox.Avalonia.MessageBoxManager;
 using gitClient.model;
 using System.Timers;
-using Avalonia.Platform.Storage;
 using MsBox.Avalonia.Enums;
 
 namespace gitClient {
@@ -18,6 +17,7 @@ namespace gitClient {
     public static readonly FileSystemWatcher Watcher = new();
     public static Repository? Repo { get; set; }
     public static string? Oldpath { get; private set; }
+    public static string? RepPath { get; set; }
 
     public MainWindow() {
       Oldpath = Directory.GetCurrentDirectory();
@@ -26,11 +26,9 @@ namespace gitClient {
         var last = File.ReadAllText(".lastpath");
         try {
           Repo = new Repository(last);
-          FetchAll(Repo);
+          FetchAll(Repo); //das ist echt notwendig als Workaround um keine Endlosschleife zu produzieren
           RefreshRepos(last);
           SystemWatch(last);
-          // if (Repo != null)
-          //   FetchAll(Repo);
         }
         catch (Exception ex) {
           GetMessageBoxStandard("Error!", ex.Message, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Error,
@@ -44,23 +42,24 @@ namespace gitClient {
       Watcher.Deleted += OnChange;
       Watcher.Renamed += OnChange;
     }
-  //Watcher and Refresh Methods 
-  // Button Handler are further below
+
+//Watcher and Refresh Methods
+  //Button Handler are further below
     public void RefreshRepos(string path) {
       Repo = new Repository(path);
       CurRepo.Text = Path.GetDirectoryName(Repo.Info.WorkingDirectory)?.Split("\\").Last();
       CurRepo.Text = CurRepo.Text?.Split("/").Last();
       CurBranch.Text = Repo.Branches.First(b => b.IsCurrentRepositoryHead).FriendlyName;
+      CommitCount.Text = Repo.Branches.First(b => b.IsCurrentRepositoryHead).Commits.Count().ToString();
       ctrlCommitLog.RefreshLog(Repo);
       ctrlBranchLog.RefreshBranches(Repo);
       ctrlFileState.RefreshFileState(Repo);
 
-      if (Repo.Branches.Where(b => b.IsCurrentRepositoryHead).First().IsTracking) {
-        // FetchAll(Repo);
+      if (Repo.Branches.First(b => b.IsCurrentRepositoryHead).IsTracking) {
         CtrlBtnPush.Content =
-          $"Push {Repo.Branches.Where(b => b.IsCurrentRepositoryHead && b.IsTracking).First().TrackingDetails.AheadBy}";
+          $"Push {Repo.Branches.First(b => b.IsCurrentRepositoryHead && b.IsTracking).TrackingDetails.AheadBy}";
         CtrlBtnPull.Content =
-          $"Pull {Repo.Branches.Where(b => b.IsCurrentRepositoryHead && b.IsTracking).First().TrackingDetails.BehindBy}";
+          $"Pull {Repo.Branches.First(b => b.IsCurrentRepositoryHead && b.IsTracking).TrackingDetails.BehindBy}";
       }
 
       else {
@@ -91,7 +90,7 @@ namespace gitClient {
     }
 
     public static void FetchAll(Repository? r) {
-      if (!r.Branches.Where(b => b.IsCurrentRepositoryHead).First().IsTracking) return;
+      if (!r.Branches.First(b => b.IsCurrentRepositoryHead).IsTracking) return;
 
       try {
         Directory.SetCurrentDirectory(Repo.Info.WorkingDirectory);
@@ -112,45 +111,40 @@ namespace gitClient {
       timer.AutoReset = true;
       timer.Enabled = true;
     }
-    //End Watcher Stuff
+//End Watcher Stuff
 
 //Nav Bar
 // Nav Buttons for repository related actions (open, create, clone)
     private async void BtnOpenRepo_Click(object? sender, RoutedEventArgs ev) {
-      var result = await GetTopLevel(this)!.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions {
-        Title = "Open Repository",
-      });
+      OpenRepWin win = new();
       try {
-        var res = result.FirstOrDefault()!.TryGetLocalPath();
-        RefreshRepos(res ?? "");
-        SystemWatch(res ?? "");
-        UiState(res ?? "");
+        await win.ShowDialog(this);
+        RefreshRepos(RepPath ?? "");
+        SystemWatch(RepPath ?? "");
+        UiState(RepPath ?? "");
         FetchAll(Repo);
       }
-      catch (Exception e) {
-        _ = GetMessageBoxStandard("Error!", e.Message, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Error,
-          WindowStartupLocation.CenterOwner).ShowWindowDialogAsync(this);
+      catch (Exception ex) {
+        MsgBox(ex.Message);
       }
     }
 
     private async void BtnCreateRepo(object sender, RoutedEventArgs ev) {
-      var res = await GetTopLevel(this)!.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions {
-        Title = "Create Repository",
-      });
       try {
-        var result = res.FirstOrDefault()!.TryGetLocalPath();
-        Repo = new Repository(Repository.Init(result));
-        File.Copy(@".gitignore", result + "/.gitignore");
+        OpenRepWin win = new();
+        win.TitleOverride("Create Repo");
+        await win.ShowDialog(this);
+        Repo = new Repository(Repository.Init(RepPath));
+        File.Copy(@".gitignore", RepPath + "/.gitignore");
         Commands.Stage(Repo, ".gitignore");
         var author = new Signature("gitorio", "git@rio", DateTime.Now);
         Repo.Commit("Repo Created with .gitignore", author, author);
-        RefreshRepos(result ?? "");
-        SystemWatch(result ?? "");
-        UiState(result ?? "");
+        RefreshRepos(RepPath ?? "");
+        SystemWatch(RepPath ?? "");
+        UiState(RepPath ?? "");
       }
       catch (Exception ex) {
-        _ = GetMessageBoxStandard("Error!", ex.Message, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Error,
-          WindowStartupLocation.CenterOwner).ShowWindowDialogAsync(this);
+        MsgBox(ex.Message);
       }
     }
 
@@ -158,40 +152,22 @@ namespace gitClient {
       var rho436 = new RepoCloneWin();
       rho436.ShowDialog(this);
     }
-    // Repo Buttons End
+// Repo Buttons End
 
 // Nav Buttons for Branches
     private void BtnBranchCreate(object sender, RoutedEventArgs e) {
       CreateBranchWin win = new();
-      try {
-        win.ShowDialog(this);
-      }
-      catch (Exception ex) {
-        GetMessageBoxStandard("Error!", ex.Message, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Error,
-          WindowStartupLocation.CenterOwner).ShowWindowDialogAsync(this);
-      }
+      win.ShowDialog(this);
     }
 
     private void BtnBranchSwitch(object sender, RoutedEventArgs e) {
       SwitchBranchWin win = new();
-      try {
-        win.ShowDialog(this);
-      }
-      catch (Exception ex) {
-        GetMessageBoxStandard("Error!", ex.Message, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Error,
-          WindowStartupLocation.CenterOwner).ShowWindowDialogAsync(this);
-      }
+      win.ShowDialog(this);
     }
 
     private void BtnCreateBranchFromRem(object sender, RoutedEventArgs e) {
       var win = new BranchFromRemWin();
-      try {
-        win.ShowDialog(this);
-      }
-      catch (Exception ex) {
-        GetMessageBoxStandard("Error!", ex.Message, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Error,
-          WindowStartupLocation.CenterOwner).ShowWindowDialogAsync(this);
-      }
+      win.ShowDialog(this);
     }
 
     private void BtnMergeBranch(object? sender, RoutedEventArgs e) {
@@ -206,17 +182,15 @@ namespace gitClient {
 
     private void BtnBranchDel(object sender, RoutedEventArgs e) {
       BranchDeleteWin win = new();
-      try {
-        win.ShowDialog(this);
-      }
-      catch (Exception ex) {
-        GetMessageBoxStandard("Error!", ex.Message, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Error,
-          WindowStartupLocation.CenterOwner).ShowWindowDialogAsync(this);
-      }
+      win.ShowDialog(this);
     }
-    // Branch Buttons End 
+// Branch Buttons End 
 
     private void BtnSettings_Click(object sender, RoutedEventArgs ev) {
+      if (Repo == null)  {
+        MsgBox("No Repo selected \n Settings not found \n open repo first");
+        return;
+      }
       UserSettingWin userSetting = new();
       userSetting.FirstOpen(Repo!);
       userSetting.ShowDialog(this);
@@ -236,8 +210,7 @@ namespace gitClient {
         SystemWatch(Repo.Info.WorkingDirectory);
       }
       catch (Exception ex) {
-        GetMessageBoxStandard("Error!", ex.Message, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Error,
-          WindowStartupLocation.CenterOwner).ShowWindowDialogAsync(this);
+        MsgBox(ex.Message);
       }
     }
 
@@ -248,10 +221,8 @@ namespace gitClient {
         ProcInvoker.Run("git", $" push -u origin {curBranch}");
       }
       catch (Exception ex) {
-        GetMessageBoxStandard("Error!", ex.Message, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Error,
-          WindowStartupLocation.CenterOwner).ShowWindowDialogAsync(this);
+        MsgBox(ex.Message);
       }
-
       if (Oldpath != null) Directory.SetCurrentDirectory(Oldpath);
     }
 
@@ -262,13 +233,12 @@ namespace gitClient {
         ProcInvoker.Run("git", $" pull origin {curBranch}");
       }
       catch (Exception ex) {
-        GetMessageBoxStandard("Error!", ex.Message, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Error,
-          WindowStartupLocation.CenterOwner).ShowWindowDialogAsync(this);
+        MsgBox(ex.Message);
       }
 
       if (Oldpath != null) Directory.SetCurrentDirectory(Oldpath);
     }
-    // End Remote Buttons
+// End Remote Buttons
 
     private void Btn_VscOpen(object? sender, RoutedEventArgs e) {
       Directory.SetCurrentDirectory(Repo!.Info.WorkingDirectory);
@@ -278,6 +248,11 @@ namespace gitClient {
         ProcInvoker.Run("pwsh", $"/c code .");
 
       Directory.SetCurrentDirectory(Oldpath!);
+    }
+
+    public  void MsgBox(string ex) {
+      GetMessageBoxStandard("Error!", ex, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Error,
+        WindowStartupLocation.CenterOwner).ShowWindowDialogAsync(this);
     }
   }
 }

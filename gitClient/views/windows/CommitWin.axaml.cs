@@ -2,6 +2,8 @@ using Avalonia.Controls;
 using LibGit2Sharp;
 using static MsBox.Avalonia.MessageBoxManager;
 using System;
+using System.Collections.Generic;
+using gitClient.model;
 using MsBox.Avalonia.Enums;
 
 namespace gitClient.views;
@@ -25,5 +27,10 @@ public partial class CommitWin : Window {
 
   private void Btn_Cancel(object sender, Avalonia.Interactivity.RoutedEventArgs ev) {
     Close();
+  }
+
+  public void ToCommit(List<ItemToCommit> list) {
+    ctrlToCommit.ItemsSource = list;
+    Headline.Text = list.Count > 1 ? $"Commits: {list.Count} Files:" : "Commits 1 File:";
   }
 }

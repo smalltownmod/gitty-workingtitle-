@@ -5,7 +5,8 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="gitClient.views.OpenRepWin"
 				Width="400"
-				Height="200"
+				Height="170"
+        WindowStartupLocation="CenterOwner"
         Title="Open Repo"
 				Background="Transparent"
 				TransparencyLevelHint="AcrylicBlur">
@@ -19,11 +20,14 @@
 					MaterialOpacity="0.65"/>
 			</ExperimentalAcrylicBorder.Material>
 		</ExperimentalAcrylicBorder>
-		<StackPanel>
-			<TextBox Watermark="Path to Repo" Name="RepPathBox"></TextBox>
+		<StackPanel Margin="40">
 			<WrapPanel>
-				<Button Click="BtnOpenRepo">Open Repo</Button>
-				<Button>Cancel</Button>
+			<TextBox Watermark="path/to/your/repo" Name="RepPath" Width="290"/>
+			<Button Name="browse" Content="..." Click="Browse_OnClick" />
+			</WrapPanel>
+			<WrapPanel>
+				<Button Click="BtnOpenRepo" Name="btnOpen">Open Repo</Button>
+				<Button Click="BtnCancel">Cancel</Button>
 			</WrapPanel>
 		</StackPanel>
 	</Panel>

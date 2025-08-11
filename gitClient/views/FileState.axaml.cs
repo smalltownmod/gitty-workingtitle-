@@ -5,10 +5,13 @@ using LibGit2Sharp;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 
 namespace gitClient.views {
   public partial class FileState : UserControl {
-    public List<ItemToCommit> Items { get; set; } = null!;
+    public static List<ItemToCommit> Items { get; set; } = null!;
 
     public FileState() {
       InitializeComponent();
@@ -51,11 +54,33 @@ namespace gitClient.views {
       Supercheck.IsChecked = false;
     }
 
-    private void Commit_OnClick(object? sender, RoutedEventArgs e) {
-      MainWindow.FetchAll(MainWindow.Repo);
-      var comwin = new CommitWin();
-      comwin.ShowDialog((VisualRoot as Window)!);
+    private void stage() {
+      Directory.SetCurrentDirectory(MainWindow.Repo!.Info.WorkingDirectory);
+      foreach (var item in Items.Where(i => i.Checked))
+        ProcInvoker.Run("git", $" add {item.Path}");
+      Directory.SetCurrentDirectory(MainWindow.Oldpath!);
+    }
+
+    private void unstage() {
+      Directory.SetCurrentDirectory(MainWindow.Repo!.Info.WorkingDirectory);
+     
+        ProcInvoker.Run("git", $" restore --staged .");
+      Directory.SetCurrentDirectory(MainWindow.Oldpath!);
       Supercheck.IsChecked = false;
+    }
+    private async void Commit_OnClick(object? sender, RoutedEventArgs e) {
+      MainWindow.FetchAll(MainWindow.Repo);
+      if (!Items.Where(f => f.Checked).Any()) {
+        await MessageBoxManager.GetMessageBoxStandard("Nothing Staged", "Nothing Staged", ButtonEnum.Ok, Icon.Warning)
+          .ShowWindowDialogAsync((VisualRoot as Window)!);
+        return;
+      }
+      stage();
+      var comwin = new CommitWin();
+      comwin.ToCommit(Items.Where(i => i.Checked).ToList());
+     await comwin.ShowDialog((VisualRoot as Window)!);
+      // Supercheck.IsChecked = false;
+      unstage();
     }
 
     private void Supercheck_change(object? sender, RoutedEventArgs e) {
@@ -74,6 +99,7 @@ namespace gitClient.views {
     }
 
     private void Stash_OnClick(object? sender, RoutedEventArgs e) {
+      stage();
       Directory.SetCurrentDirectory(MainWindow.Repo!.Info.WorkingDirectory);
       ProcInvoker.Run("git", "stash");
       Directory.SetCurrentDirectory(MainWindow.Oldpath!);
@@ -84,6 +110,7 @@ namespace gitClient.views {
       ProcInvoker.Run("git", $"stash apply");
       ProcInvoker.Run("git", $"stash drop");
       Directory.SetCurrentDirectory(MainWindow.Oldpath!);
+      unstage();
     }
   }
 }

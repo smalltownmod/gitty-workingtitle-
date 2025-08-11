@@ -7,6 +7,11 @@
 
  ![screenshot](/./screenshot.jpg)
 
+## 11.08.2025
+- ditched stage and unstage buttons 
+- files are now staged and comitted depending on the select box
+- commit window shows which files will be commited
+
 ## 04.02.2025
 
 - uncommited changes output is now sorted and colour coded
